@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vedang Joshi · Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:#f5f0d8;font-family:"Courier New",Courier,monospace;display:flex;flex-direction:column;align-items:center;padding:20px 12px 40px;gap:12px;overflow-x:hidden;
+  background:radial-gradient(ellipse at 50% 0%,#3a0d5c 0%,#12063a 45%,#03010d 100%) fixed}
+body>*{position:relative;z-index:1}
+.floor{position:fixed;left:-50%;right:-50%;bottom:0;height:45vh;z-index:0;pointer-events:none;opacity:.55;
+  background-image:linear-gradient(rgba(255,43,214,.5) 2px,transparent 2px),linear-gradient(90deg,rgba(0,255,255,.45) 2px,transparent 2px);
+  background-size:60px 60px;transform:perspective(300px) rotateX(62deg);transform-origin:bottom}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;
+  background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.22) 2px 3px)}
+
+h1,h2,h3,h4,.hud,.btn,.sec-title,.pb{font-family:"Press Start 2P",monospace;font-weight:normal}
+h1{font-size:clamp(14px,3.6vw,22px);text-align:center;margin:8px 0 0;line-height:1.6}
+.neon{color:#fff;animation:flicker 3.2s infinite;
+  text-shadow:0 0 4px #fff,0 0 10px #ff2bd6,0 0 22px #ff2bd6,0 0 40px #ff2bd6}
+.neon2{color:#fff;text-shadow:0 0 4px #fff,0 0 10px #00e5ff,0 0 22px #00e5ff}
+@keyframes flicker{0%,18%,22%,62%,64%,100%{opacity:1}19%,21%{opacity:.35}63%{opacity:.55}}
+.sub{font-size:14px;color:#c9b6ff;margin:0;text-align:center}
+.hud{width:min(92vw,456px);display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#fff}
+.hud b{color:#7dff9b;font-weight:normal}
+.pb{background:none;border:2px solid #00e5ff;color:#00e5ff;font-size:9px;padding:4px 8px;cursor:pointer;box-shadow:0 0 8px #00e5ff}
+
+#wrap{position:relative;width:min(92vw,456px);border:3px solid #ff2bd6;border-radius:10px;padding:6px;background:#05010f;
+  box-shadow:0 0 18px #ff2bd6,0 0 40px rgba(255,43,214,.35),inset 0 0 18px rgba(0,229,255,.25)}
+canvas{display:block;width:100%;height:auto;touch-action:none;border-radius:6px}
+#overlay{position:absolute;inset:6px;background:rgba(5,1,15,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:18px;text-align:center;border-radius:6px}
+#overlay.hidden{display:none}
+#overlay h2{font-size:12px;color:#ffde00;margin:0;line-height:1.6;text-shadow:0 0 8px #ffde00}
+#overlay p{font-size:14px;line-height:1.5;margin:0;max-width:340px}
+.btn{display:inline-block;min-width:190px;text-align:center;text-decoration:none;background:#ffde00;color:#000;border:0;padding:10px 16px;font-size:10px;cursor:pointer;box-shadow:0 0 10px #ffde00}
+.pad{display:none;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,56px);gap:6px;margin-top:6px}
+@media (pointer:coarse){.pad{display:grid}}
+.pad button{background:#15053a;color:#00e5ff;border:2px solid #00e5ff;font-size:18px;cursor:pointer;border-radius:8px}
+
+section{width:min(92vw,700px)}
+.sec-title{font-size:11px;color:#00e5ff;margin:18px 0 12px;text-shadow:0 0 8px #00e5ff}
+.box{border:2px solid #7a2cff;padding:14px;background:rgba(10,4,30,.85);box-shadow:0 0 12px rgba(122,44,255,.5)}
+.item{margin:0 0 14px;font-size:14px;line-height:1.5}
+.item:last-child{margin-bottom:0}
+.item small{display:block;color:#c9b6ff;font-size:12px;line-height:1.6;margin-top:4px}
+.item b{color:#ffde00;font-weight:normal}
+
+/* Project card stack */
+.stack{position:relative;height:300px;margin-top:4px}
+.pc{position:absolute;left:0;right:0;top:0;transition:transform .35s,opacity .35s;background:rgba(10,4,30,.97);border:2px solid #7a2cff;box-shadow:0 0 14px rgba(122,44,255,.6);padding:18px;transform-origin:top center}
+.pc h4{font-size:11px;color:#ffde00;margin:0 0 10px;line-height:1.6;text-shadow:0 0 6px #ffde00}
+.pc .t{font-size:12px;color:#00e5ff;margin:0 0 10px}
+.pc p{margin:0 0 12px;font-size:14px;line-height:1.5}
+.pc .tech{font-size:12px;color:#c9b6ff;margin:0 0 14px}
+.stack-ctrl{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:6px}
+.stack-ctrl span{font-size:10px;color:#c9b6ff}
+
+/* Skills */
+.grp{font-size:12px;color:#ff7ae6;margin:0 0 10px;text-shadow:0 0 6px #ff7ae6}
+.grp+.skill{}
+.skill{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:10px;margin:0 0 10px;font-size:13px}
+.seg{display:flex;gap:3px}
+.seg i{flex:1;height:14px;background:#14093a;border:1px solid #3a2a7a}
+.seg i.on{background:linear-gradient(#b8ffc8,#00e676);border-color:#7dff9b;box-shadow:0 0 6px #7dff9b}
+.gap{height:10px}
+a{color:#00e5ff}
+@media (max-width:560px){.skill{grid-template-columns:110px 1fr}}
+</style>
+</head>
+<body>
+<div class="floor"></div>
+
+<h1><span class="neon">VEDANG JOSHI</span><br><span class="neon2">· PORTFOLIO ·</span></h1>
+<p class="sub">Explore by playing. Eat the big pellets to open my projects.</p>
+
+<div class="hud">
+  <span>SCORE <b id="score">0</b></span>
+  <span>PROJECTS <b id="proj">0/4</b></span>
+  <span>LIVES <b id="lives">3</b></span>
+  <button class="pb" id="pauseBtn" aria-label="Pause">II</button>
+</div>
+
+<div id="wrap">
+  <canvas id="c"></canvas>
+  <div id="overlay"></div>
+</div>
+
+<div class="pad">
+  <button data-d="0,-1" style="grid-column:2;grid-row:1" aria-label="Up">▲</button>
+  <button data-d="-1,0" style="grid-column:1;grid-row:2" aria-label="Left">◀</button>
+  <button data-d="0,1" style="grid-column:2;grid-row:2" aria-label="Down">▼</button>
+  <button data-d="1,0" style="grid-column:3;grid-row:2" aria-label="Right">▶</button>
+</div>
+
+<section>
+  <div class="sec-title">GOAL</div>
+  <div class="box">
+    <p class="item">Becoming a stronger <b>AI Engineer</b>: shipping production-grade ML systems and RAG pipelines.</p>
+  </div>
+
+  <div class="sec-title">PROJECTS</div>
+  <div class="stack" id="stack"></div>
+  <div class="stack-ctrl">
+    <button class="pb" id="prev" aria-label="Previous project">◀</button>
+    <span id="ctr">1 / 4</span>
+    <button class="pb" id="next" aria-label="Next project">▶</button>
+  </div>
+
+  <div class="sec-title">SKILLS</div>
+  <div class="box" id="skills"></div>
+
+  <div class="sec-title">CERTIFICATIONS</div>
+  <div class="box">
+    <p class="item"><b>AWS Certified Machine Learning Engineer – Associate</b> (Sep 2026)
+      <small>The professional-level bridge between building a model and running it in production. It covers preparing and validating data, developing and tuning models, deploying and orchestrating ML workflows on AWS, and monitoring and securing those systems over time.</small></p>
+    <p class="item"><b>AWS Certified AI Practitioner</b> (Aug 2026)
+      <small>A foundational certificate. It covers how AI, machine learning and generative AI work, how foundation models and prompts are used in practice, and the responsible AI, security and governance practices that apply to them.</small></p>
+  </div>
+
+  <div class="sec-title">EDUCATION</div>
+  <div class="box">
+    <p class="item"><b>MSc Business Management (Information Technology)</b>
+      <small>University of Greenwich, London · 2025–26</small></p>
+    <p class="item"><b>BEng Computer Engineering</b>
+      <small>SPPU, Nashik, India · 2018–22</small></p>
+  </div>
+
+  <div class="sec-title">CONTACT</div>
+  <div class="box">
+    <p class="item">London, UK<br>
+      <a href="mailto:vedangjoshi13@gmail.com">vedangjoshi13@gmail.com</a> ·
+      <a href="https://github.com/VedangJoshi13" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://www.linkedin.com/in/vedang-joshi-303b98240/" target="_blank" rel="noopener">LinkedIn</a></p>
+  </div>
+</section>
+
+<script>
+const PROJECTS = [
+  { title: "Soreal", tag: "FastAPI · Docker · SurrealDB", desc: "Legal knowledge graph. An LLM pipeline extracts entities from 500+ document chunks.", tech: "Python · FastAPI · SurrealDB · Ollama", link: "https://github.com/VedangJoshi13/Soreal", cta: "VIEW ON GITHUB →" },
+  { title: "Agentic AI Chatbot", tag: "NLP · Firebase · Streamlit", desc: "Booking chatbot for SMEs with multi-step workflows. Cut manual steps from 9 to 4.", tech: "Python · Firestore · Streamlit", link: "https://brightfix-ai-chatbot-enqpk6bs79m6oq354fjapr.streamlit.app/", cta: "LIVE DEMO →" },
+  { title: "AI Outreach Generator", tag: "GenAI · LangChain · ChromaDB", desc: "Turns job postings into personalised outreach emails using semantic project matching.", tech: "Python · LangChain · ChromaDB · Groq", link: "https://ai-cold-email-generator-gcarztfqblvosjendvdvsd.streamlit.app/", cta: "LIVE DEMO →" },
+  { title: "Mental Health Prediction", tag: "ML · FastAPI · Pydantic", desc: "Prediction API that scores student mental health from 12 inputs. 0.82 F1.", tech: "Python · FastAPI · Pandas · Joblib", link: "https://mental-health-prediction-1-t59c.onrender.com/", cta: "LIVE DEMO →" }
+];
+
+// Skill levels are out of 10 segments (estimated from the CV). Edit to match your own rating.
+const SKILLS = [
+  { cat: "Languages", items: [["Python", 9], ["SQL", 7.5]] },
+  { cat: "Web", items: [["HTML", 8.5], ["CSS", 7.5], ["JavaScript", 6.5], ["React", 5]] },
+  { cat: "AI & Data", items: [["LLMs & RAG", 8.5], ["NLP", 7.5], ["ML / DL", 8], ["Vector DBs", 7.5], ["Pandas, PySpark", 7.5]] },
+  { cat: "Cloud & DevOps", items: [["AWS", 8], ["FastAPI", 8], ["Docker", 7.5], ["Git / GitHub", 8], ["GCP / Firebase", 6]] }
+];
+
+// '#' wall, '.' dot, 'o' project pellet, ' ' empty path (tunnels wrap at the edges)
+const MAZE = [
+"###################",
+"#........#........#",
+"#o##.###.#.###.##o#",
+"#.................#",
+"#.##.#.#####.#.##.#",
+"#....#...#...#....#",
+"####.### # ###.####",
+"   #.#       #.#   ",
+"####.# ##### #.####",
+"   .        .      ",
+"####.# ##### #.####",
+"   #.#       #.#   ",
+"#.#...#####.#...#.#",
+"#........#........#",
+"#.##.###.#.###.##.#",
+"#o.#.....#.....#.o#",
+"##.#.#.#.#.#.#.#.##",
+"#.......#...#.....#",
+"###################"
+];
+
+const T = 24, ROWS = MAZE.length, COLS = MAZE[0].length;
+const PAC_MS = 120, GHOST_MS = 135, SCARE_MS = 6000, READY_MS = 3000;
+const PAC_START = { x: 9, y: 3 };
+const GHOST_START = [
+  { x: 1, y: 1, c: "#ff3b3b" },
+  { x: 17, y: 1, c: "#3bf0ff" },
+  { x: 1, y: 17, c: "#ffb8ff" },
+  { x: 9, y: 9, c: "#ffb852" }
+];
+const DIRS = { ArrowUp:[0,-1], ArrowDown:[0,1], ArrowLeft:[-1,0], ArrowRight:[1,0],
+  w:[0,-1], s:[0,1], a:[-1,0], d:[1,0], W:[0,-1], S:[0,1], A:[-1,0], D:[1,0] };
+
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+canvas.width = COLS * T;
+canvas.height = ROWS * T;
+const overlay = document.getElementById("overlay");
+const $ = id => document.getElementById(id);
+
+let grid, pelletIdx, total, pelletsLeft, pac, dir, nextDir, ghosts, score, lives;
+let state = "start", scaredMs = 0, readyMs = 0;
+let accP = 0, accG = 0, last = performance.now();
+
+function norm(x, y) { if (x < 0) x = COLS - 1; else if (x >= COLS) x = 0; return { x, y }; }
+function walk(x, y) { return y >= 0 && y < ROWS && grid[y][x] !== "#"; }
+
+function buildMaze() {
+  grid = MAZE.map(r => r.padEnd(COLS, " ").split(""));
+  pelletIdx = {}; total = 0;
+  for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++)
+    if (grid[y][x] === "o") pelletIdx[y + "," + x] = total++;
+  pelletsLeft = total;
+}
+function resetPositions() {
+  pac = { x: PAC_START.x, y: PAC_START.y, rx: PAC_START.x, ry: PAC_START.y };
+  dir = { x: 0, y: 0 }; nextDir = { x: 0, y: 0 };
+  ghosts = GHOST_START.map(g => ({ x: g.x, y: g.y, rx: g.x, ry: g.y, sx: g.x, sy: g.y, c: g.c, d: { x: 0, y: 0 } }));
+  scaredMs = 0; readyMs = READY_MS; accP = 0; accG = 0;
+}
+function hud() {
+  $("score").textContent = score;
+  $("proj").textContent = (total - pelletsLeft) + "/" + total;
+  $("lives").textContent = lives;
+}
+function showOverlay(html, btnText, action) {
+  overlay.innerHTML = html + `<button class="btn" id="ob">${btnText}</button>`;
+  overlay.classList.remove("hidden");
+  $("ob").onclick = action;
+  $("ob").focus();
+}
+function newGame() {
+  buildMaze(); score = 0; lives = 3; resetPositions(); state = "play";
+  overlay.classList.add("hidden"); hud();
+}
+function togglePause() {
+  if (state === "play") {
+    state = "paused";
+    showOverlay("<h2>PAUSED</h2><p>Press P or Esc to resume</p>", "RESUME", togglePause);
+  } else if (state === "paused") {
+    state = "play";
+    overlay.classList.add("hidden");
+  }
+}
+
+function openCard(i) {
+  state = "card";
+  const p = PROJECTS[i % PROJECTS.length];
+  showOverlay(
+    `<h2>${p.title}</h2>
+     <p style="font-size:11px;color:#00e5ff">${p.tag}</p>
+     <p>${p.desc}</p>
+     <a class="btn" href="${p.link}" target="_blank" rel="noopener">${p.cta}</a>`,
+    "CONTINUE", closeCard);
+}
+function closeCard() {
+  if (state !== "card") return;
+  if (pelletsLeft === 0) {
+    state = "win";
+    showOverlay(`<h2>ALL PROJECTS COLLECTED!</h2><p>Score ${score}</p>`, "PLAY AGAIN", newGame);
+  } else {
+    state = "play";
+    overlay.classList.add("hidden");
+  }
+}
+function loseLife() {
+  lives--; hud();
+  if (lives <= 0) {
+    state = "over";
+    showOverlay(`<h2>GAME OVER</h2><p>Score ${score}</p>`, "PLAY AGAIN", newGame);
+  } else {
+    state = "dead";
+    setTimeout(() => { if (state === "dead") { resetPositions(); state = "play"; } }, 1200);
+  }
+}
+
+function setDir(d) {
+  if (state === "start" || state === "over" || state === "win") newGame();
+  if (state !== "play") return;
+  nextDir = { x: d[0], y: d[1] };
+}
+
+function stepPac() {
+  if (nextDir.x || nextDir.y) {
+    const n = norm(pac.x + nextDir.x, pac.y + nextDir.y);
+    if (walk(n.x, n.y)) dir = nextDir;
+  }
+  if (!(dir.x || dir.y)) return;
+  const n = norm(pac.x + dir.x, pac.y + dir.y);
+  if (!walk(n.x, n.y)) return;
+  pac.x = n.x; pac.y = n.y;
+  const ch = grid[pac.y][pac.x];
+  if (ch === ".") { grid[pac.y][pac.x] = " "; score += 10; hud(); }
+  else if (ch === "o") {
+    grid[pac.y][pac.x] = " ";
+    const i = pelletIdx[pac.y + "," + pac.x];
+    pelletsLeft--; score += 50; scaredMs = SCARE_MS; hud();
+    openCard(i);
+    return;
+  }
+  collide();
+}
+
+function stepGhost(g) {
+  const opts = [[1,0],[-1,0],[0,1],[0,-1]]
+    .filter(([dx, dy]) => !(dx === -g.d.x && dy === -g.d.y))
+    .map(([dx, dy]) => { const n = norm(g.x + dx, g.y + dy); return { x: n.x, y: n.y, dx, dy }; })
+    .filter(p => walk(p.x, p.y));
+  if (!opts.length) return;
+  const dist = p => Math.abs(p.x - pac.x) + Math.abs(p.y - pac.y);
+  let pick;
+  if (scaredMs > 0 || Math.random() < 0.2) pick = opts[Math.floor(Math.random() * opts.length)];
+  else pick = opts.reduce((a, b) => dist(b) < dist(a) ? b : a);
+  g.d = { x: pick.dx, y: pick.dy };
+  g.x = pick.x; g.y = pick.y;
+}
+
+function collide() {
+  if (state !== "play" || readyMs > 0) return;
+  for (const g of ghosts) {
+    if (g.x === pac.x && g.y === pac.y) {
+      if (scaredMs > 0) {
+        score += 200; hud();
+        g.x = g.sx; g.y = g.sy; g.rx = g.sx; g.ry = g.sy; g.d = { x: 0, y: 0 };
+      } else { loseLife(); return; }
+    }
+  }
+}
+
+function smooth(dt) {
+  const k = Math.min(1, dt / (PAC_MS * 0.8));
+  [pac, ...ghosts].forEach(e => {
+    e.rx = Math.abs(e.x - e.rx) > 2 ? e.x : e.rx + (e.x - e.rx) * k;
+    e.ry = Math.abs(e.y - e.ry) > 2 ? e.y : e.ry + (e.y - e.ry) * k;
+  });
+}
+
+function drawGhost(g, now) {
+  const cx = (g.rx + 0.5) * T, cy = (g.ry + 0.5) * T, r = T * 0.42;
+  const sc = scaredMs > 0;
+  ctx.fillStyle = sc ? (scaredMs < 1500 && Math.floor(now / 150) % 2 ? "#ffffff" : "#2121de") : g.c;
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, Math.PI, 0);
+  ctx.lineTo(cx + r, cy + r);
+  for (let i = 1; i <= 4; i++) ctx.lineTo(cx + r - i * r / 2, cy + r - (i % 2) * r * 0.35);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle = "#ffffff";
+  [-1, 1].forEach(s => {
+    ctx.beginPath();
+    ctx.arc(cx + s * r * 0.35, cy - r * 0.2, r * 0.28, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  if (!sc) {
+    ctx.fillStyle = "#1030c0";
+    const ox = g.d.x * r * 0.12, oy = g.d.y * r * 0.12;
+    [-1, 1].forEach(s => {
+      ctx.beginPath();
+      ctx.arc(cx + s * r * 0.35 + ox, cy - r * 0.2 + oy, r * 0.14, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+}
+
+function draw(now) {
+  ctx.fillStyle = "#05010f";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
+    const ch = grid[y][x], px = x * T, py = y * T;
+    if (ch === "#") { ctx.fillStyle = "#2026ff"; ctx.fillRect(px + 2, py + 2, T - 4, T - 4); }
+    else if (ch === ".") { ctx.fillStyle = "#ffd9b0"; ctx.beginPath(); ctx.arc(px + T/2, py + T/2, 2.5, 0, Math.PI * 2); ctx.fill(); }
+    else if (ch === "o") { ctx.fillStyle = "#ffb8ae"; ctx.beginPath(); ctx.arc(px + T/2, py + T/2, 6 + Math.sin(now / 150) * 1.5, 0, Math.PI * 2); ctx.fill(); }
+  }
+  const moving = dir.x || dir.y;
+  const a = dir.x === -1 ? Math.PI : dir.y === 1 ? Math.PI / 2 : dir.y === -1 ? -Math.PI / 2 : 0;
+  const m = moving ? 0.05 + 0.25 * Math.abs(Math.sin(now / 120)) : 0.25;
+  const cx = (pac.rx + 0.5) * T, cy = (pac.ry + 0.5) * T;
+  ctx.fillStyle = "#ffde00";
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, T * 0.44, a + m, a + Math.PI * 2 - m);
+  ctx.closePath(); ctx.fill();
+  ghosts.forEach(g => drawGhost(g, now));
+  if (state === "play" && readyMs > 0) {
+    ctx.fillStyle = "#ffde00";
+    ctx.font = "14px 'Press Start 2P', monospace";
+    ctx.textAlign = "center";
+    ctx.fillText("READY!", canvas.width / 2, 13 * T + T / 2 + 5);
+    ctx.textAlign = "start";
+  }
+}
+
+function loop(now) {
+  const dt = Math.min(64, now - last); last = now;
+  if (state === "play") {
+    if (readyMs > 0) readyMs = Math.max(0, readyMs - dt);
+    accP += dt; accG += dt;
+    if (scaredMs > 0) scaredMs = Math.max(0, scaredMs - dt);
+    while (accP >= PAC_MS && state === "play") { accP -= PAC_MS; stepPac(); }
+    while (accG >= GHOST_MS && state === "play") {
+      accG -= GHOST_MS;
+      if (readyMs <= 0) { ghosts.forEach(stepGhost); collide(); }
+    }
+  }
+  smooth(dt);
+  draw(now);
+  requestAnimationFrame(loop);
+}
+
+// Input
+addEventListener("keydown", e => {
+  if (e.key === "p" || e.key === "P" || e.key === "Escape") {
+    if (state === "play" || state === "paused") { e.preventDefault(); togglePause(); }
+    return;
+  }
+  const d = DIRS[e.key];
+  if (d) { e.preventDefault(); setDir(d); }
+});
+$("pauseBtn").addEventListener("click", togglePause);
+document.querySelectorAll(".pad button").forEach(b => {
+  b.addEventListener("pointerdown", e => {
+    e.preventDefault();
+    setDir(b.dataset.d.split(",").map(Number));
+  });
+});
+let tStart = null;
+$("wrap").addEventListener("touchstart", e => { const t = e.touches[0]; tStart = [t.clientX, t.clientY]; }, { passive: true });
+$("wrap").addEventListener("touchend", e => {
+  if (!tStart) return;
+  const t = e.changedTouches[0];
+  const dx = t.clientX - tStart[0], dy = t.clientY - tStart[1];
+  tStart = null;
+  if (Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
+  if (Math.abs(dx) > Math.abs(dy)) setDir([Math.sign(dx), 0]);
+  else setDir([0, Math.sign(dy)]);
+});
+
+// Project card stack: front card on top, the next cards peek out behind it
+let cur = 0;
+const stackEl = $("stack");
+stackEl.innerHTML = [3, 1, 2, 0].map(k => PROJECTS[k]).map((p, i) =>
+  `<article class="pc" data-i="${i}">
+     <h4>${p.title}</h4>
+     <p class="t">${p.tag}</p>
+     <p>${p.desc}</p>
+     <p class="tech">${p.tech}</p>
+     <a class="btn" href="${p.link}" target="_blank" rel="noopener" style="min-width:0">${p.cta}</a>
+   </article>`).join("");
+const cards = [...stackEl.querySelectorAll(".pc")];
+function renderStack() {
+  const n = cards.length;
+  cards.forEach((el, i) => {
+    const off = (i - cur + n) % n;
+    if (off < 3) {
+      el.style.opacity = 1;
+      el.style.transform = `translateY(${off * 14}px) scale(${1 - off * 0.04})`;
+      el.style.zIndex = 10 - off;
+      el.style.pointerEvents = off <= 1 ? "auto" : "none";
+      el.style.cursor = off === 0 ? "default" : "pointer";
+    } else {
+      el.style.opacity = 0;
+      el.style.transform = "translateY(0) scale(.9)";
+      el.style.zIndex = 0;
+      el.style.pointerEvents = "none";
+    }
+  });
+  $("ctr").textContent = (cur + 1) + " / " + n;
+}
+cards.forEach((el, i) => el.addEventListener("click", () => {
+  if (i !== cur) { cur = i; renderStack(); }
+}));
+// Cards behind the front one need pointer events so they can be clicked
+cards.forEach(el => el.style.pointerEvents = "auto");
+$("prev").onclick = () => { cur = (cur - 1 + cards.length) % cards.length; renderStack(); };
+$("next").onclick = () => { cur = (cur + 1) % cards.length; renderStack(); };
+renderStack();
+
+// Skill progress bars
+$("skills").innerHTML = SKILLS.map(group =>
+  `<div class="grp">${group.cat}</div>` +
+  group.items.map(([name, level]) => {
+    const on = Math.round(level);
+    const segs = Array.from({ length: 10 }, (_, i) => `<i class="${i < on ? "on" : ""}"></i>`).join("");
+    return `<div class="skill"><span>${name}</span><div class="seg">${segs}</div></div>`;
+  }).join("") + `<div class="gap"></div>`
+).join("");
+
+// Init
+buildMaze();
+resetPositions();
+score = 0; lives = 3; hud();
+showOverlay(
+  `<h2>PORTFOLIO PAC-MAN</h2>
+   <p>Arrows / WASD / swipe to move.<br>P or Esc to pause.</p>`,
+  "START", newGame);
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
